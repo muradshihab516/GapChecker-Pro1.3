@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="bn" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GapChecker Pro | সাপোর্ট গ্যাপ ফাইন্ডার</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>">
+</head>
+<body>
+
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="bg-shape shape-1"></div>
+        <div class="bg-shape shape-2"></div>
+        <div class="bg-shape shape-3"></div>
+        <div class="bg-grid"></div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="spinner">
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+                <div class="spinner-core"><i class="fa-solid fa-magnifying-glass"></i></div>
+            </div>
+            <p class="loading-text">বিশ্লেষণ করা হচ্ছে<span class="loading-dots"></span></p>
+            <div class="loading-progress">
+                <div class="loading-progress-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <!-- Brand -->
+            <div class="brand">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-name">GapChecker</span>
+                    <span class="brand-tag">Pro</span>
+                </div>
+            </div>
+            
+            <!-- Copyright Badge in Navbar -->
+            <div class="nav-copyright">
+                <div class="copyright-badge">
+                    <i class="fa-solid fa-fire-flame-curved"></i>
+                    <span>Motivation Premier X Support Link Box</span>
+                </div>
+            </div>
+            
+            <!-- Nav Actions -->
+            <div class="nav-actions">
+                <button class="nav-btn" id="historyBtn" title="হিস্ট্রি দেখুন">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span class="nav-badge" id="historyCount">0</span>
+                </button>
+                <button class="nav-btn" id="themeToggle" title="থিম পরিবর্তন">
+                    <i class="fa-solid fa-moon" id="themeIcon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="container">
+
+        <!-- Live Preview Bar -->
+        <div class="preview-bar">
+            <div class="preview-item">
+                <div class="preview-icon blue">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                </div>
+                <div class="preview-data">
+                    <span class="preview-label">All Done</span>
+                    <span class="preview-value" id="previewAllDone">0</span>
+                </div>
+            </div>
+            <div class="preview-divider"></div>
+            <div class="preview-item">
+                <div class="preview-icon green">
+                    <i class="fa-solid fa-comments"></i>
+                </div>
+                <div class="preview-data">
+                    <span class="preview-label">Commenters</span>
+                    <span class="preview-value" id="previewCommenter">0</span>
+                </div>
+            </div>
+            <div class="preview-divider"></div>
+            <div class="preview-item status">
+                <div class="preview-icon" id="statusIcon">
+                    <i class="fa-solid fa-circle-info"></i>
+                </div>
+                <span class="preview-status" id="previewStatus">লিস্ট পেস্ট করুন</span>
+            </div>
+        </div>
+
+        <!-- Input Section -->
+        <section class="input-section">
+            <div class="input-grid">
+                
+                <!-- All Done Input Card -->
+                <div class="input-card" id="allDoneCard">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <div class="card-icon blue">
+                                <i class="fa-solid fa-clipboard-check"></i>
+                            </div>
+                            <div class="card-info">
+                                <h3>All Done List</h3>
+                                <span class="card-count" id="allDoneCount">0 জন সদস্য</span>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn paste-btn" id="pasteAllDone" title="পেস্ট করুন">
+                                <i class="fa-solid fa-paste"></i>
+                            </button>
+                            <button class="action-btn reset-btn" id="resetAllDone" title="মুছে ফেলুন">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="textarea-wrapper">
+                        <textarea 
+                            id="allDoneList" 
+                            placeholder="এখানে All Done লিস্ট পেস্ট করুন...
+
+📋 উদাহরণ:
+━━━━━━━━━━━━━━━━━━━━━
+📅 তারিখ: 03-02-26
+📆 বার: মঙ্গলবার
+যারা সাপোর্ট করেছেন
+👇👇👇
+
+1️⃣➤@Nil Hasan
+2️⃣➤@Kobir Khan
+3️⃣➤@অচেনা বালক
+━━━━━━━━━━━━━━━━━━━━━"></textarea>
+                        <div class="textarea-border"></div>
+                    </div>
+                </div>
+
+                <!-- Commenter Input Card -->
+                <div class="input-card" id="commenterCard">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <div class="card-icon green">
+                                <i class="fa-solid fa-comments"></i>
+                            </div>
+                            <div class="card-info">
+                                <h3>Commenter List</h3>
+                                <span class="card-count" id="commenterCount">0 জন কমেন্টার</span>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn paste-btn" id="pasteCommenter" title="পেস্ট করুন">
+                                <i class="fa-solid fa-paste"></i>
+                            </button>
+                            <button class="action-btn reset-btn" id="resetCommenter" title="মুছে ফেলুন">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="textarea-wrapper">
+                        <textarea 
+                            id="commenterList" 
+                            placeholder="এখানে Commenter লিস্ট পেস্ট করুন...
+
+💬 উদাহরণ:
+━━━━━━━━━━━━━━━━━━━━━
+*Link No:-67*
+
+Kobir Khan
+অচেনা বালক
+SHOHAG 卝 MAHMUDヅ
+Chamak Sarkar
+━━━━━━━━━━━━━━━━━━━━━"></textarea>
+                        <div class="textarea-border"></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="results-section" id="resultsSection">
+            
+            <!-- Section Header -->
+            <div class="section-header">
+                <div class="section-title">
+                    <div class="section-icon">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </div>
+                    <h2>Analysis Report</h2>
+                </div>
+                <div class="section-actions">
+                    <button class="section-btn" id="exportBtn" title="এক্সপোর্ট">
+                        <i class="fa-solid fa-download"></i>
+                    </button>
+                    <button class="section-btn" id="shareBtn" title="শেয়ার">
+                        <i class="fa-solid fa-share-nodes"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Statistics Grid -->
+            <div class="stats-grid">
+                <div class="stat-card stat-blue">
+                    <div class="stat-glow"></div>
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-clipboard-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="statAllDone">0</span>
+                        <span class="stat-label">All Done করেছে</span>
+                    </div>
+                    <div class="stat-trend up">
+                        <i class="fa-solid fa-arrow-trend-up"></i>
+                    </div>
+                </div>
+
+                <div class="stat-card stat-purple">
+                    <div class="stat-glow"></div>
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-comments"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="statTotalComment">0</span>
+                        <span class="stat-label">মোট কমেন্ট</span>
+                    </div>
+                    <div class="stat-trend">
+                        <i class="fa-solid fa-minus"></i>
+                    </div>
+                </div>
+
+                <div class="stat-card stat-green">
+                    <div class="stat-glow"></div>
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-user-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="statGroupComment">0</span>
+                        <span class="stat-label">গ্রুপের কমেন্ট</span>
+                    </div>
+                    <div class="stat-trend up">
+                        <i class="fa-solid fa-arrow-trend-up"></i>
+                    </div>
+                </div>
+
+                <div class="stat-card stat-red">
+                    <div class="stat-glow"></div>
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-user-xmark"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="statSupportGap">0</span>
+                        <span class="stat-label">সাপোর্ট গ্যাপ</span>
+                    </div>
+                    <div class="stat-trend down">
+                        <i class="fa-solid fa-arrow-trend-down"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Section -->
+            <div class="progress-card">
+                <div class="progress-header">
+                    <div class="progress-title">
+                        <i class="fa-solid fa-chart-simple"></i>
+                        <span>সাপোর্ট প্রোগ্রেস</span>
+                    </div>
+                    <span class="progress-percent" id="progressPercent">0%</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" id="progressBar">
+                        <div class="progress-glow"></div>
+                    </div>
+                </div>
+                <div class="progress-footer">
+                    <div class="progress-stat">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span id="progressDone">0 জন করেছে</span>
+                    </div>
+                    <div class="progress-stat">
+                        <i class="fa-solid fa-circle-xmark"></i>
+                        <span id="progressRemaining">0 জন বাকি</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gap Result Card -->
+            <div class="result-card result-gap">
+                <div class="result-header">
+                    <div class="result-title">
+                        <div class="result-icon danger">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <div class="result-info">
+                            <h3 id="resultTitle">যারা কমেন্ট করেননি</h3>
+                            <p id="resultSubtitle">Link No: N/A</p>
+                        </div>
+                    </div>
+                    <button class="copy-btn" id="copyResult">
+                        <i class="fa-regular fa-copy"></i>
+                        <span>কপি</span>
+                    </button>
+                </div>
+                <div class="result-body">
+                    <pre id="resultContent">ফলাফল এখানে দেখাবে...</pre>
+                </div>
+            </div>
+
+            <!-- Collapsible Sections -->
+            <div class="collapsible-group">
+                
+                <!-- Matched Users -->
+                <details class="collapsible matched">
+                    <summary>
+                        <div class="collapsible-header">
+                            <div class="collapsible-icon success">
+                                <i class="fa-solid fa-user-check"></i>
+                            </div>
+                            <span class="collapsible-title">যারা সাপোর্ট করেছেন</span>
+                        </div>
+                        <span class="collapsible-badge" id="matchedCount">0</span>
+                    </summary>
+                    <div class="collapsible-body" id="matchedContent">
+                        কেউ ম্যাচ হয়নি
+                    </div>
+                </details>
+
+                <!-- Extra Commenters -->
+                <details class="collapsible extra">
+                    <summary>
+                        <div class="collapsible-header">
+                            <div class="collapsible-icon warning">
+                                <i class="fa-solid fa-user-plus"></i>
+                            </div>
+                            <span class="collapsible-title">বাইরের Commenter</span>
+                        </div>
+                        <span class="collapsible-badge" id="extraCount">0</span>
+                    </summary>
+                    <div class="collapsible-body" id="extraContent">
+                        কোনো বাইরের Commenter নেই
+                    </div>
+                </details>
+
+            </div>
+
+        </section>
+
+        <!-- Footer with Copyright -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-top">
+                    <p><i class="fa-solid fa-lightbulb"></i> লিস্ট পেস্ট করলে অটো সেভ হবে | <kbd>Ctrl</kbd>+<kbd>Enter</kbd> চেক করুন</p>
+                </div>
+                <div class="footer-divider"></div>
+                <div class="footer-bottom">
+                    <div class="copyright">
+                        <div class="copyright-logo">
+                            <i class="fa-solid fa-fire-flame-curved"></i>
+                        </div>
+                        <div class="copyright-info">
+                            <span class="copyright-brand">Motivation Premier X Support Link Box</span>
+                            <span class="copyright-year">
+                                <i class="fa-regular fa-copyright"></i> 2026 | All Rights Reserved
+                            </span>
+                        </div>
+                    </div>
+                    <div class="footer-social">
+                        <a href="https://www.facebook.com/groups/931692323980314/?ref=share&mibextid=NSMWBT" class="social-link" title="Facebook">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-link" title="YouTube">
+                            <i class="fa-brands fa-youtube"></i>
+                        </a>
+                        <a href="https://www.facebook.com/share/17soQiq8j1/" class="social-link" title="Telegram">
+                            <i class="fa-brands fa-telegram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- Floating Action Button -->
+    <div class="fab-container">
+        <button class="fab-btn" id="checkBtn">
+            <span class="fab-bg"></span>
+            <span class="fab-content">
+                <i class="fa-solid fa-magnifying-glass-chart"></i>
+                <span>Check Analysis</span>
+            </span>
+            <div class="fab-ripple"></div>
+        </button>
+    </div>
+
+    <!-- History Modal -->
+    <div class="modal-overlay" id="historyModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <h2>চেকিং হিস্ট্রি</h2>
+                </div>
+                <button class="modal-close" id="closeHistory">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="historyList">
+                <!-- History items render here -->
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn danger" id="clearHistory">
+                    <i class="fa-solid fa-trash-can"></i>
+                    <span>সব মুছুন</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Result Modal -->
+    <div class="modal-overlay" id="quickResultModal">
+        <div class="modal modal-lg">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fa-solid fa-square-poll-vertical"></i>
+                    <h2>Quick Report</h2>
+                </div>
+                <button class="modal-close" id="closeQuickResult">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <textarea id="quickResultOutput" readonly placeholder="ফলাফল লোড হচ্ছে..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn secondary" id="closeQuickResultBtn">
+                    <i class="fa-solid fa-xmark"></i>
+                    <span>বন্ধ করুন</span>
+                </button>
+                <button class="modal-btn primary" id="copyQuickResult">
+                    <i class="fa-regular fa-copy"></i>
+                    <span>কপি করুন</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div class="toast-icon">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <span class="toast-message">Success!</span>
+        <button class="toast-close">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="toast-progress"></div>
+    </div>
+
+    <!-- Keyboard Shortcuts Hint -->
+    <div class="shortcuts-hint" id="shortcutsHint">
+        <span><kbd>Ctrl</kbd> + <kbd>Enter</kbd> চেক করুন</span>
+    </div>
+
+    <!-- Script -->
+    <script src="script.js"></script>
+</body>
+</html>
